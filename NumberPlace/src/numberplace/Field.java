@@ -3,11 +3,13 @@ package numberplace;
 public class Field {
 
 	Square board[][] = new Square[9][9];
+	Square assumption[][] = new Square[9][9];
 
 	Field() {
 		for (byte i = 0; i < 9; i++) {
 			for (byte j = 0; j < 9; j++) {
 				board[i][j] = new Square();
+				assumption[i][j] = new Square();
 			}
 		}
 	}
@@ -78,7 +80,8 @@ public class Field {
 						if (board[i][j].solveNumber() != 0) {// number is decided
 							board[i][j].number = board[i][j].solveNumber();// fixed number is written
 							flag = false;// new number is written
-							System.out.println("("+i+","+j+")"+" "+board[i][j].number);
+							System.out.println("(" + i + "," + j + ")" + " " + board[i][j].number);// show coordinate
+																									// written number
 							dispBoard();
 						}
 					}
@@ -89,6 +92,37 @@ public class Field {
 				break;
 			}
 		}
+	}
+
+	public byte[] searchFewest() {// return coordinate whose number possibleNum(true) is fewest
+		byte ret[] = new byte[2];// (x,y)
+		byte count = 0, min = 10;
+		for (byte i = 0; i < 9; i++) {
+			for (byte j = 0; j < 9; j++) {
+				count = 0;
+				for (byte k = 0; k < 9; k++) {
+					if (board[i][j].possibleNum.get(k) == true) {
+						count++;
+					}
+					if (count < min) {
+						min = count;
+						ret[0] = i;
+						ret[1] = j;
+					}
+				}
+			}
+		}
+		return ret;
+	}
+
+	public void solve2() {// assume number and solve
+		//copy board to assumption
+		for (byte i = 0; i < 9; i++) {
+			for (byte j = 0; j < 9; j++) {
+				assumption[i][j] = board[i][j].clone();
+			}
+		}
+		
 	}
 
 }

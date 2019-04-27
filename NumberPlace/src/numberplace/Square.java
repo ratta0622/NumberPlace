@@ -18,16 +18,30 @@ public class Square {
 		}
 	}
 
+	@Override
+	public Square clone() {
+		Square temp = new Square();
+		try{
+//			temp = (Square)super.clone();
+			temp.number=this.number;
+			for(byte i=0;i<9;i++) {
+				temp.possibleNum.put(i,this.possibleNum.get(i));
+			}
+		}catch(Exception e) {
+		e.printStackTrace();
+		}
+		return temp;
+	}
 
 	public byte solveNumber() {
 		byte num = 0;
 		for (byte i = 1; i <= 9; i++) {
-			if (possibleNum.get(i)) {//if i could be written
-				if (num != 0)//if other number (not i) could be written 
+			if (possibleNum.get(i)) {// if i could be written
+				if (num != 0)// if other number (not i) could be written
 					return 0;
 				num = i;
 			}
 		}
-		return num;//single number could be written
+		return num;// single number could be written
 	}
 }
