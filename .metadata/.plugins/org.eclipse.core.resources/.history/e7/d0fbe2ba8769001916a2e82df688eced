@@ -87,7 +87,7 @@ public class Numplace {
 		test.writeNum((byte)8,(byte)8,(byte)8);
 		
 		
-		test.solve((byte)-1,(byte)0,(byte)0).dispBoard();
+		test.solve((byte)-1,(byte)0,(byte)0);
 		
 
 	}

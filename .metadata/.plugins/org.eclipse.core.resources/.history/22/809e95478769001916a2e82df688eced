@@ -102,17 +102,17 @@ public class Field {
 						if (temp.board[i][j].solveNumber() != 0) {// number is decided
 							temp.board[i][j].number = temp.board[i][j].solveNumber();// fixed number is written
 							flag = false;// new number is written
-							//System.out.println("(" + i + "," + j + ")" + " " + temp.board[i][j].number);// show
+							System.out.println("(" + i + "," + j + ")" + " " + temp.board[i][j].number);// show
 																										// coordinate
 							// written number
-							//temp.dispBoard();
+							temp.dispBoard();
 						}
 					}
 				}
 			}
 			if (flag) {// if no number is written, finish loop
 				if (temp.mistake()) {// assumption is a mistake
-					System.out.println("assumption which [" + x + "][" + y + "] is " + num + " was wrong");
+					System.out.println("assumption which ["+x+"]["+y+"] is "+ num +" is wrong");
 					return (null);
 				} else if (zero) {// all square is written number(finish solving)
 					System.out.println("finish");
@@ -122,11 +122,13 @@ public class Field {
 					byte array[] = temp.searchFewest();
 					System.out.println("assume (" + array[1] + "," + array[2] + ") is " + array[0]);
 					Field ret = new Field();
-					ret = temp.solve(array[0], array[1], array[2]);// recursion
-					if (ret == null) {
+					ret=temp.solve(array[0], array[1], array[2]);
+					if ( ret == null) {// recursion
 						temp.board[array[1]][array[2]].possibleNum.put(array[0], false);
+						temp.solve((byte) -1, (byte) 0, (byte) 0);
 					} else {
-						return ret;
+						temp = temp.solve(array[0], array[1], array[2]).clone();
+						return temp;
 					}
 				}
 			}
@@ -138,23 +140,24 @@ public class Field {
 		byte count = 0, min = 10, num = 0;
 		for (byte i = 0; i < 9; i++) {
 			for (byte j = 0; j < 9; j++) {
+				count = 0;
 				if (this.board[i][j].number == 0) {
-					count=0;
 					for (byte k = 1; k <= 9; k++) {
 						if (this.board[i][j].possibleNum.get(k)) {// count possible numbers
 							count++;
 							num = k;
 						}
-					}
-					if (count < min && count != 0) {
-						min = count;
-						ret[0] = num;
-						ret[1] = i;
-						ret[2] = j;
+						if (count < min && count != 0) {
+							min = count;
+							ret[0] = num;
+							ret[1] = i;
+							ret[2] = j;
+						}
 					}
 				}
 			}
 		}
+		System.out.println("aaaaa");
 		return ret;
 	}
 

@@ -112,19 +112,20 @@ public class Field {
 			}
 			if (flag) {// if no number is written, finish loop
 				if (temp.mistake()) {// assumption is a mistake
-					System.out.println("assumption which [" + x + "][" + y + "] is " + num + " was wrong");
+					//System.out.println("assumption which [" + x + "][" + y + "] is " + num + " was wrong");
 					return (null);
 				} else if (zero) {// all square is written number(finish solving)
 					System.out.println("finish");
 					return temp;// solved board is returned
 				} else {// some square are blank
-					System.out.println("deadlock");
+					//System.out.println("deadlock");
 					byte array[] = temp.searchFewest();
-					System.out.println("assume (" + array[1] + "," + array[2] + ") is " + array[0]);
+					//System.out.println("assume (" + array[1] + "," + array[2] + ") is " + array[0]);
 					Field ret = new Field();
 					ret = temp.solve(array[0], array[1], array[2]);// recursion
 					if (ret == null) {
 						temp.board[array[1]][array[2]].possibleNum.put(array[0], false);
+						temp.solve((byte) -1, (byte) 0, (byte) 0);
 					} else {
 						return ret;
 					}

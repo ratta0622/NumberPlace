@@ -125,6 +125,7 @@ public class Field {
 					ret = temp.solve(array[0], array[1], array[2]);// recursion
 					if (ret == null) {
 						temp.board[array[1]][array[2]].possibleNum.put(array[0], false);
+						//temp.solve((byte) -1, (byte) 0, (byte) 0);
 					} else {
 						return ret;
 					}

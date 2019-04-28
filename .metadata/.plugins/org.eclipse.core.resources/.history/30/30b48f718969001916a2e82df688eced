@@ -102,7 +102,7 @@ public class Field {
 						if (temp.board[i][j].solveNumber() != 0) {// number is decided
 							temp.board[i][j].number = temp.board[i][j].solveNumber();// fixed number is written
 							flag = false;// new number is written
-							//System.out.println("(" + i + "," + j + ")" + " " + temp.board[i][j].number);// show
+							System.out.println("(" + i + "," + j + ")" + " " + temp.board[i][j].number);// show
 																										// coordinate
 							// written number
 							//temp.dispBoard();
@@ -121,12 +121,19 @@ public class Field {
 					System.out.println("deadlock");
 					byte array[] = temp.searchFewest();
 					System.out.println("assume (" + array[1] + "," + array[2] + ") is " + array[0]);
+					
+					System.out.println(temp.board[array[1]][array[2]].possibleNum);
+					System.exit(1);
+					
+					
 					Field ret = new Field();
-					ret = temp.solve(array[0], array[1], array[2]);// recursion
-					if (ret == null) {
+					ret = temp.solve(array[0], array[1], array[2]);
+					if (ret == null) {// recursion
 						temp.board[array[1]][array[2]].possibleNum.put(array[0], false);
+						temp.solve((byte) -1, (byte) 0, (byte) 0);
 					} else {
-						return ret;
+						temp = ret.clone();
+						return temp;
 					}
 				}
 			}
@@ -144,13 +151,14 @@ public class Field {
 						if (this.board[i][j].possibleNum.get(k)) {// count possible numbers
 							count++;
 							num = k;
+							System.out.println(count);
 						}
-					}
-					if (count < min && count != 0) {
-						min = count;
-						ret[0] = num;
-						ret[1] = i;
-						ret[2] = j;
+						if (count < min && count != 0) {
+							min = count;
+							ret[0] = num;
+							ret[1] = i;
+							ret[2] = j;
+						}
 					}
 				}
 			}
