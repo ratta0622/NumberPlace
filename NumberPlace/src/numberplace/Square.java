@@ -24,7 +24,7 @@ public class Square {
 		try{
 //			temp = (Square)super.clone();
 			temp.number=this.number;
-			for(byte i=0;i<9;i++) {
+			for(byte i=1;i<=9;i++) {
 				temp.possibleNum.put(i,this.possibleNum.get(i));
 			}
 		}catch(Exception e) {

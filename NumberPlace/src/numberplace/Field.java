@@ -3,18 +3,33 @@ package numberplace;
 public class Field {
 
 	Square board[][] = new Square[9][9];
-	Square assumption[][] = new Square[9][9];
 
 	Field() {
 		for (byte i = 0; i < 9; i++) {
 			for (byte j = 0; j < 9; j++) {
 				board[i][j] = new Square();
-				assumption[i][j] = new Square();
 			}
 		}
 	}
 
 	// display board
+
+	@Override
+	public Field clone() {
+		Field temp = new Field();
+		try {
+//			temp = (Square)super.clone();
+			for (byte i = 0; i < 9; i++) {
+				for (byte j = 0; j < 9; j++) {
+					temp.board[i][j] = this.board[i][j].clone();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return temp;
+	}
+
 	public void dispBoard() {
 		/*
 		 * for (Square array[] : board) { for (Square square : array) {
@@ -66,63 +81,101 @@ public class Field {
 		}
 	}
 
-	public void solve() {
+	public Field solve(byte num, byte x, byte y) {// assume board[x][y].number is num
+		Field temp = new Field();
+		temp = this.clone();// to assume number, copy board
+		if (num >= 1 && num <= 9) {// assume number
+			temp.writeNum(num, x, y);
+		}
 		byte i, j;
-		boolean flag;
+		boolean flag, zero;// if all square is written number, zero is false
 		while (true) {
+			zero = true;
 			flag = true;
 			for (i = 0; i < 9; i++) {
 				for (j = 0; j < 9; j++) {
-					if (board[i][j].number == 0) {
-						searchHorizontal(i, j);
-						searchVertical(i, j);
-						searchBlock(i, j);
-						if (board[i][j].solveNumber() != 0) {// number is decided
-							board[i][j].number = board[i][j].solveNumber();// fixed number is written
+					if (temp.board[i][j].number == 0) {
+						zero = false;
+						temp.searchHorizontal(i, j);
+						temp.searchVertical(i, j);
+						temp.searchBlock(i, j);
+						if (temp.board[i][j].solveNumber() != 0) {// number is decided
+							temp.board[i][j].number = temp.board[i][j].solveNumber();// fixed number is written
 							flag = false;// new number is written
-							System.out.println("(" + i + "," + j + ")" + " " + board[i][j].number);// show coordinate
-																									// written number
-							dispBoard();
+							System.out.println("(" + i + "," + j + ")" + " " + temp.board[i][j].number);// show
+																										// coordinate
+							// written number
+							temp.dispBoard();
 						}
 					}
 				}
 			}
-			if (flag) {// if no number is written finish loop
-				System.out.println("finish");
-				break;
+			if (flag) {// if no number is written, finish loop
+				if (temp.mistake()) {// assumption is a mistake
+					return (null);
+				} else if (zero) {// all square is written number(finish solving)
+					System.out.println("finish");
+					return temp;// solved board is returned
+				} else {// some square are blank
+					System.out.println("deadlock");
+					byte array[] = temp.searchFewest();
+					System.out.println("assume (" + array[1] + "," + array[2] + ") is " + array[0]);
+					if (temp.solve(array[0], array[1], array[2]) == null) {// recursion
+						temp.board[array[1]][array[2]].possibleNum.put(array[0], false);
+						temp.solve((byte) -1, (byte) 0, (byte) 0);
+					} else {
+						temp = temp.solve(array[0], array[1], array[2]).clone();
+						return temp;
+					}
+				}
 			}
 		}
 	}
 
 	public byte[] searchFewest() {// return coordinate whose number possibleNum(true) is fewest
-		byte ret[] = new byte[2];// (x,y)
-		byte count = 0, min = 10;
+		byte ret[] = new byte[3];// (x,y)
+		byte count = 0, min = 10, num = 0;
 		for (byte i = 0; i < 9; i++) {
 			for (byte j = 0; j < 9; j++) {
 				count = 0;
-				for (byte k = 0; k < 9; k++) {
-					if (board[i][j].possibleNum.get(k) == true) {
-						count++;
-					}
-					if (count < min) {
-						min = count;
-						ret[0] = i;
-						ret[1] = j;
+				if (this.board[i][j].number == 0) {
+					for (byte k = 1; k <= 9; k++) {
+						if (this.board[i][j].possibleNum.get(k)) {// count possible numbers
+							count++;
+							num = k;
+						}
+						if (count < min && count != 0) {
+							min = count;
+							ret[0] = num;
+							ret[1] = i;
+							ret[2] = j;
+						}
 					}
 				}
 			}
 		}
+		System.out.println("aaaaa");
 		return ret;
 	}
 
-	public void solve2() {// assume number and solve
-		//copy board to assumption
-		for (byte i = 0; i < 9; i++) {
-			for (byte j = 0; j < 9; j++) {
-				assumption[i][j] = board[i][j].clone();
+	public boolean mistake() {// if there is Square whose number is 0 and possibleNum is all false, return
+								// true
+		byte i, j, k, possible;
+		for (i = 0; i < 9; i++) {
+			for (j = 0; j < 9; j++) {
+				if (this.board[i][j].number == 0) {
+					possible = 0;
+					for (k = 1; k <= 9; k++) {
+						if (board[i][j].possibleNum.get(k)) {
+							possible++;
+						}
+					}
+					if (possible == 0) {
+						return true;
+					}
+				}
 			}
 		}
-		
+		return false;
 	}
-
 }

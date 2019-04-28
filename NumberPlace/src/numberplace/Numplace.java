@@ -5,6 +5,8 @@ public class Numplace {
 	public static void main(String[] args) {
 		Field test = new Field();
 
+		/*
+		 
 		test.writeNum((byte)2,(byte)0,(byte)0);
 		test.writeNum((byte)7,(byte)0,(byte)1);
 		test.writeNum((byte)1,(byte)0,(byte)7);
@@ -45,10 +47,48 @@ public class Numplace {
 		test.writeNum((byte)4,(byte)8,(byte)1);
 		test.writeNum((byte)8,(byte)8,(byte)7);
 		test.writeNum((byte)5,(byte)8,(byte)8);
+	*/
 		
-		test.dispBoard();
+		test.writeNum((byte)7,(byte)0,(byte)0);
+		test.writeNum((byte)6,(byte)0,(byte)2);
+		test.writeNum((byte)3,(byte)0,(byte)3);
+		test.writeNum((byte)5,(byte)0,(byte)5);
+		test.writeNum((byte)4,(byte)0,(byte)6);
+		test.writeNum((byte)1,(byte)0,(byte)8);
 		
-		test.solve2();
+		test.writeNum((byte)4,(byte)1,(byte)4);
+		
+		test.writeNum((byte)8,(byte)2,(byte)0);
+		test.writeNum((byte)7,(byte)2,(byte)3);
+		test.writeNum((byte)6,(byte)2,(byte)5);
+		
+		test.writeNum((byte)6,(byte)3,(byte)0);
+		test.writeNum((byte)1,(byte)3,(byte)2);
+		test.writeNum((byte)8,(byte)3,(byte)6);
+		
+		test.writeNum((byte)2,(byte)4,(byte)1);
+		test.writeNum((byte)3,(byte)4,(byte)7);
+		
+		test.writeNum((byte)3,(byte)5,(byte)2);
+		test.writeNum((byte)1,(byte)5,(byte)6);
+		test.writeNum((byte)4,(byte)5,(byte)8);
+		
+		test.writeNum((byte)2,(byte)6,(byte)3);
+		test.writeNum((byte)4,(byte)6,(byte)5);
+		test.writeNum((byte)6,(byte)6,(byte)8);
+
+		test.writeNum((byte)8,(byte)7,(byte)4);
+		
+		test.writeNum((byte)4,(byte)8,(byte)0);
+		test.writeNum((byte)9,(byte)8,(byte)2);
+		test.writeNum((byte)6,(byte)8,(byte)3);
+		test.writeNum((byte)3,(byte)8,(byte)5);
+		test.writeNum((byte)5,(byte)8,(byte)6);
+		test.writeNum((byte)8,(byte)8,(byte)8);
+		
+		
+		test.solve((byte)-1,(byte)0,(byte)0);
+		
 
 	}
 
